@@ -2,7 +2,12 @@ const todoControl = document.querySelector('.todo-control');
 const headerInput = document.querySelector('.header-input');
 const todoList = document.querySelector('.todo-list');
 const todoCompleted = document.querySelector('.todo-completed');
-const todoData = [];
+const todoData = JSON.parse(localStorage.getItem('todoData')) || [];
+
+document.addEventListener('DOMContentLoaded', function () {
+  render();
+});
+
 const render = function () {
   todoList.innerHTML = '';
   todoCompleted.innerHTML = '';
@@ -27,15 +32,25 @@ const render = function () {
       item.completed = !item.completed;
       render();
     });
+    li.querySelector('.todo-remove').addEventListener('click', function () {
+      todoData.splice(todoData.indexOf(item), 1);
+      render();
+    });
   });
+  localStorage.setItem('todoData', JSON.stringify(todoData));
 };
+
 todoControl.addEventListener('submit', function (event) {
   event.preventDefault();
   const newTodo = {
     text: headerInput.value,
     completed: false,
   };
+  if (newTodo.text === '') {
+    return;
+  }
   todoData.push(newTodo);
   headerInput.value = '';
+  localStorage.setItem('todoData', JSON.stringify(todoData));
   render();
 });
