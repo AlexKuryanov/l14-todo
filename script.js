@@ -19,12 +19,15 @@ const render = function () {
       '</div>';
 
     if (item.completed) {
-      todoControl.append(li);
+      todoCompleted.append(li);
     } else {
       todoList.append(li);
     }
+    li.querySelector('.todo-complete').addEventListener('click', function () {
+      item.completed = !item.completed;
+      render();
+    });
   });
-  li.querySelector('.to');
 };
 todoControl.addEventListener('submit', function (event) {
   event.preventDefault();
